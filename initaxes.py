@@ -22,6 +22,13 @@ def initPlainAx(locSize, axTitle):
     ax.set_xticks([])
     ax.set_yticks([])
     ax.set_title(axTitle)
+    ax.set_axis_bgcolor((.75,.75,.75))
+    ax.spines['bottom'].set_color((.75,.75,.75))
+    ax.spines['top'].set_color((.75,.75,.75)) 
+    ax.spines['right'].set_color((.75,.75,.75))
+    ax.spines['left'].set_color((.75,.75,.75))
+    scalarLight = plt.Circle((0,0), .8, fc='k', ec='k')
+    ax.add_patch(scalarLight)
     return ax
 
 # Init plot axes

@@ -35,29 +35,21 @@ fig = plt.figure(figsize=(winXSizeInches, winYSizeInches))
 fig.canvas.set_window_title('CliffordVec3')
 
 # Scalar Light
-scalarLight = plt.Circle((0,0), .8, fc='k', ec='k')
-ax0 = initaxes.initPlainAx((.1, .65, .05, .1),"Scalar X")
-ax0.set_axis_bgcolor((.75,.75,.75))
-ax0.spines['bottom'].set_color((.75,.75,.75))
-ax0.spines['top'].set_color((.75,.75,.75)) 
-ax0.spines['right'].set_color((.75,.75,.75))
-ax0.spines['left'].set_color((.75,.75,.75))
-
-ax0.add_patch(scalarLight)
-sliderS = initaxes.init_slider((.05, .45, .2, .05), "Scalar S")
+ax0 = initaxes.initPlainAx((.13, .75, .05, .1),"Scalar X")
+sliderS = initaxes.init_slider((.05, .55, .2, .05), "Scalar S")
 
 def update_color(xVal):
     r = - np.clip(xVal, -1, 0)
     g = np.clip(xVal, 0, 1)
     b = 0.
-    scalarLight.set_facecolor((r,g,b,1))
+    ax0.patches[0].set_facecolor((r,g,b,1))
 sliderS.on_changed(update_color)
     
 # Plot x vector axes
-ax1 = initaxes.initPlotAxes((.3, .55, .2, .4),"Vector X")    
+ax1 = initaxes.initPlotAxes((.3, .7, .2, .2),"Vector X")    
 line1=ax1.plot(tArray, dArrayX,'-')    
 
-axSl1 = initaxes.init_slider((.3, .45, .2, .05), "X")
+axSl1 = initaxes.init_slider((.3, .55, .2, .05), "X")
 #axSl1.initaxes.sliderX.on_changed(update_vector)
 
 
