@@ -34,16 +34,48 @@ plt.close('all')
 fig = plt.figure(figsize=(winXSizeInches, winYSizeInches))
 fig.canvas.set_window_title('CliffordVec3')
 
-# Scalar Light
-ax0 = initaxes.initPlainAx((.13, .75, .05, .1),"Scalar X")
-sliderS = initaxes.init_slider((.05, .55, .2, .05), "Scalar S")
+# Scalar Light X
+#ax0 = initaxes.initPlainAx((.13, .75, .05, .1),"Scalar X")
+#sliderS = initaxes.init_slider((.05, .55, .2, .05), "Scalar S")
+#
+#def update_color(xVal):
+#    r = - np.clip(xVal, -1, 0)
+#    g = np.clip(xVal, 0, 1)
+#    b = 0.
+#    ax0.patches[0].set_facecolor((r,g,b,1))
+#sliderS.on_changed(update_color)
 
-def update_color(xVal):
-    r = - np.clip(xVal, -1, 0)
-    g = np.clip(xVal, 0, 1)
-    b = 0.
-    ax0.patches[0].set_facecolor((r,g,b,1))
-sliderS.on_changed(update_color)
+# Scalar Light Y
+class ScalarLight:
+    
+    def update_color(self, slVal):
+        r = - np.clip(slVal, -1, 0)
+        g =   np.clip(slVal,  0, 1)
+        b = 0.
+        self.lightAx.patches[0].set_facecolor((r,g,b,1))
+        
+
+    def __init__(self, locSize, label):
+        self.locSize = locSize
+        self.sliderLocSize = [locSize[0],
+                              locSize[1],
+                              locSize[2],
+                              locSize[3]/4.]
+        self.slAx = initaxes.init_slider(self.sliderLocSize, label)
+        self.slAx.on_changed(self.update_color)
+
+        self.lightLocSize  = [locSize[0]+locSize[2]/3,
+                              locSize[1]+locSize[3]*.75,
+                              locSize[2]/4,
+                              locSize[3]/2]
+        self.lightAx = initaxes.initPlainAx(self.lightLocSize, label)
+        
+        
+xLight = ScalarLight((.05, .55, .2, .2),"xLight")
+        
+yLight = ScalarLight((.05, .1, .2, .2), 'yLight')
+
+#yLight.printData()
     
 # Plot x vector axes
 ax1 = initaxes.initPlotAxes((.3, .7, .2, .2),"Vector X")    
@@ -61,7 +93,7 @@ def SawToothGenerator(arg):
     # array T    
     currTime += delT
     relTime = currTime % (2.)
-    currValX = relTime * sliderS.val
+    currValX = relTime * xLight.slAx.val
     line1[0].set_data((0., currValX),(0,0)) 
     plt.pause(.1)
     
