@@ -34,6 +34,7 @@ def initPlainAx(locSize, axTitle):
 # Init plot axes
 def initPlotAxes(locSize, axTitle):
     ax = plt.axes(locSize)    #(xorg,yorg,width,height)
+    ax.set_yticks([])
     ax.set_xlim((-1,1))
     ax.grid(True)
     ax.set_title(axTitle)

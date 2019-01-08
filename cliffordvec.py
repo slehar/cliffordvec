@@ -71,20 +71,37 @@ class ScalarLight:
         self.lightAx = initaxes.initPlainAx(self.lightLocSize, label)
         
         
-xLight = ScalarLight((.05, .55, .2, .2),"xLight")
+xLight = ScalarLight((.05, .55, .2, .2),"x")
         
-yLight = ScalarLight((.05, .1, .2, .2), 'yLight')
+yLight = ScalarLight((.05, .1, .2, .2), 'y')
 
-#yLight.printData()
+# Scalar Light Y
+class VectorPlot:
     
-# Plot x vector axes
-ax1 = initaxes.initPlotAxes((.3, .7, .2, .2),"Vector X")    
-line1=ax1.plot(tArray, dArrayX,'-')    
 
-axSl1 = initaxes.init_slider((.3, .55, .2, .05), "X")
-#axSl1.initaxes.sliderX.on_changed(update_vector)
+    def __init__(self, locSize, label):
+        self.locSize = locSize
+        self.sliderLocSize = [locSize[0],
+                              locSize[1],
+                              locSize[2],
+                              locSize[3]/4.]
+        self.slAx = initaxes.init_slider(self.sliderLocSize, label)
+#        self.slAx.on_changed(self.update_vector)
+
+        self.plotLocSize  = [locSize[0],
+                              locSize[1]+locSize[3]*.5,
+                              locSize[2],
+                              locSize[3]]
+        self.plotAx = initaxes.initPlotAxes(self.plotLocSize, label)
+        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
 
 
+        
+xVector = VectorPlot((.3, .55, .2, .2), 'x')        
+        
+yVector = VectorPlot((.3, .1,  .2, .2), 'y')        
+        
+        
 ########[ Sawtooth Generator ]########
 def SawToothGenerator(arg):
     
@@ -93,8 +110,10 @@ def SawToothGenerator(arg):
     # array T    
     currTime += delT
     relTime = currTime % (2.)
-    currValX = relTime * xLight.slAx.val
-    line1[0].set_data((0., currValX),(0,0)) 
+    currValX = relTime * xVector.slAx.val
+    currValY = relTime * yVector.slAx.val
+    xVector.line1[0].set_data((0., currValX),(0,0)) 
+    yVector.line1[0].set_data((0., currValY),(0,0)) 
     plt.pause(.1)
     
     
