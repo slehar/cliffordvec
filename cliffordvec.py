@@ -53,6 +53,8 @@ class ScalarLight:
         g =   np.clip(slVal,  0, 1)
         b = 0.
         self.lightAx.patches[0].set_facecolor((r,g,b,1))
+#        self.slAx.set_val(slVal)
+        self.changed = True
         
 
     def __init__(self, locSize, label):
@@ -70,15 +72,22 @@ class ScalarLight:
                               locSize[3]/2]
         self.lightAx = initaxes.initPlainAx(self.lightLocSize, label)
         
+        self.changed = False
+        
         
 xLight = ScalarLight((.05, .55, .2, .2),"x")
         
 yLight = ScalarLight((.05, .1, .2, .2), 'y')
 
-# Scalar Light Y
+# Vector Plot
 class VectorPlot:
     
-
+    def update_vector(self, val):
+#        self.scalarSl.set_val(val)
+#        self.scalarSl.update_color(val)
+        self.changed = True
+        
+        
     def __init__(self, locSize, label):
         self.locSize = locSize
         self.sliderLocSize = [locSize[0],
@@ -86,7 +95,7 @@ class VectorPlot:
                               locSize[2],
                               locSize[3]/4.]
         self.slAx = initaxes.init_slider(self.sliderLocSize, label)
-#        self.slAx.on_changed(self.update_vector)
+        self.slAx.on_changed(self.update_vector)
 
         self.plotLocSize  = [locSize[0],
                               locSize[1]+locSize[3]*.5,
@@ -94,6 +103,8 @@ class VectorPlot:
                               locSize[3]]
         self.plotAx = initaxes.initPlotAxes(self.plotLocSize, label)
         self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
+        
+        self.changed = False
 
 
         
@@ -114,7 +125,26 @@ def SawToothGenerator(arg):
     currValY = relTime * yVector.slAx.val
     xVector.line1[0].set_data((0., currValX),(0,0)) 
     yVector.line1[0].set_data((0., currValY),(0,0)) 
-    plt.pause(.1)
+    
+    # Couple scalar and vector sliders
+    if xVector.changed:
+        xLight.slAx.set_val(xVector.slAx.val)
+        xVector.changed = False
+        xLight.changed = False
+    if xLight.changed:
+        xVector.slAx.set_val(xLight.slAx.val)
+        xLight.changed = False
+        xVector.changed = False
+    if yVector.changed:
+        yLight.slAx.set_val(yVector.slAx.val)
+        yVector.changed = False
+        yLight.changed = False
+    if yLight.changed:
+        yVector.slAx.set_val(yLight.slAx.val)
+        yLight.changed = False
+        yVector.changed = False
+    
+#    plt.pause(.1)
     
     
 ani = animation.FuncAnimation(fig, SawToothGenerator, interval=0.)
