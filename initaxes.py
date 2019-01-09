@@ -39,6 +39,15 @@ def initPlotAxes(locSize, axTitle):
     ax.grid(True)
     ax.set_title(axTitle)
     return ax
+
+# Init plot2 axes
+def initPlot2Axes(locSize, axTitle):
+    ax = plt.axes(locSize)    #(xorg,yorg,width,height)
+    ax.set_xlim((-1, 1))
+    ax.set_ylim((-1, 1))
+    ax.grid(True)
+    ax.set_title(axTitle)
+    return ax
     
 # Init Slider
 def init_slider(locSize, label):

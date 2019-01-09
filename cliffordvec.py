@@ -112,6 +112,39 @@ xVector = VectorPlot((.3, .55, .2, .2), 'x')
         
 yVector = VectorPlot((.3, .1,  .2, .2), 'y')        
         
+# Bivector Plot
+class BivectorPlot:
+    
+    def update_vector(self, val):
+#        self.scalarSl.set_val(val)
+#        self.scalarSl.update_color(val)
+        self.changed = True
+        
+        
+    def __init__(self, locSize, label):
+        self.locSize = locSize
+#        self.sliderLocSize = [locSize[0],
+#                              locSize[1],
+#                              locSize[2],
+#                              locSize[3]/4.]
+#        self.slAx = initaxes.init_slider(self.sliderLocSize, label)
+#        self.slAx.on_changed(self.update_vector)
+
+        self.plotLocSize  = [locSize[0],
+                              locSize[1],
+                              locSize[2],
+                              locSize[3]]
+        self.plotAx = initaxes.initPlot2Axes(self.plotLocSize, label)
+#        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
+        
+        self.changed = False
+
+
+biVector = BivectorPlot((.55, .1, .4, .8), 'Bivector')
+
+
+
+
         
 ########[ Sawtooth Generator ]########
 def SawToothGenerator(arg):
