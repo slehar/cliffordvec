@@ -123,19 +123,13 @@ class BivectorPlot:
         
     def __init__(self, locSize, label):
         self.locSize = locSize
-#        self.sliderLocSize = [locSize[0],
-#                              locSize[1],
-#                              locSize[2],
-#                              locSize[3]/4.]
-#        self.slAx = initaxes.init_slider(self.sliderLocSize, label)
-#        self.slAx.on_changed(self.update_vector)
 
         self.plotLocSize  = [locSize[0],
                               locSize[1],
                               locSize[2],
                               locSize[3]]
         self.plotAx = initaxes.initPlot2Axes(self.plotLocSize, label)
-#        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
+        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
         
         self.changed = False
 
@@ -157,24 +151,26 @@ def SawToothGenerator(arg):
     currValX = relTime * xVector.slAx.val
     currValY = relTime * yVector.slAx.val
     xVector.line1[0].set_data((0., currValX),(0,0)) 
-    yVector.line1[0].set_data((0., currValY),(0,0)) 
+    yVector.line1[0].set_data((0., currValY),(0,0))
+    
+    biVector.line1[0].set_data((0,currValX), (0,currValY))
     
     # Couple scalar and vector sliders
     if xVector.changed:
         xLight.slAx.set_val(xVector.slAx.val)
         xVector.changed = False
-        xLight.changed = False
+        xLight.changed  = False
     if xLight.changed:
         xVector.slAx.set_val(xLight.slAx.val)
-        xLight.changed = False
+        xLight.changed  = False
         xVector.changed = False
     if yVector.changed:
         yLight.slAx.set_val(yVector.slAx.val)
         yVector.changed = False
-        yLight.changed = False
+        yLight.changed  = False
     if yLight.changed:
         yVector.slAx.set_val(yLight.slAx.val)
-        yLight.changed = False
+        yLight.changed  = False
         yVector.changed = False
     
 #    plt.pause(.1)
