@@ -7,10 +7,10 @@ Created on Thu Jan  3 14:55:37 2019
 @author: slehar
 """
 
-
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
-from matplotlib.patches import Circle, Rectangle
+#from matplotlib.patches import Circle, Rectangle
 
 # Init plain axes
 def initPlainAx(locSize, axTitle):
@@ -55,4 +55,82 @@ def init_slider(locSize, label):
     slider = Slider(axSl, label, -1., 1., valinit=0.)
     slider.poly.fill = False
     return slider
+
+# Scalar Light Y
+class ScalarLight:
+    
+    def update_color(self, slVal):
+        r = - np.clip(slVal, -1, 0)
+        g =   np.clip(slVal,  0, 1)
+        b = 0.
+        self.lightAx.patches[0].set_facecolor((r,g,b,1))
+#        self.slAx.set_val(slVal)
+        self.changed = True
+        
+
+    def __init__(self, locSize, label):
+        self.locSize = locSize
+        self.sliderLocSize = [locSize[0],
+                              locSize[1],
+                              locSize[2],
+                              locSize[3]/4.]
+        self.slAx = init_slider(self.sliderLocSize, label)
+        self.slAx.on_changed(self.update_color)
+
+        self.lightLocSize  = [locSize[0]+locSize[2]/3,
+                              locSize[1]+locSize[3]*.75,
+                              locSize[2]/4,
+                              locSize[3]/2]
+        self.lightAx = initPlainAx(self.lightLocSize, label)
+        
+        self.changed = False
+        
+# Vector Plot
+class VectorPlot:
+    
+    def update_vector(self, val):
+#        self.scalarSl.set_val(val)
+#        self.scalarSl.update_color(val)
+        self.changed = True
+        
+        
+    def __init__(self, locSize, label, tArray, dArray):
+        self.locSize = locSize
+        self.sliderLocSize = [locSize[0],
+                              locSize[1],
+                              locSize[2],
+                              locSize[3]/4.]
+        self.slAx = init_slider(self.sliderLocSize, label)
+        self.slAx.on_changed(self.update_vector)
+
+        self.plotLocSize  = [locSize[0],
+                              locSize[1]+locSize[3]*.5,
+                              locSize[2],
+                              locSize[3]]
+        self.plotAx = initPlotAxes(self.plotLocSize, label)
+        self.line1 = self.plotAx.plot(tArray, dArray,'-')
+        
+        self.changed = False
+
+
+# Bivector Plot
+class BivectorPlot:
+    
+    def update_vector(self, val):
+#        self.scalarSl.set_val(val)
+#        self.scalarSl.update_color(val)
+        self.changed = True
+        
+        
+    def __init__(self, locSize, label, tArray, dArrayX, dArrayY):
+        self.locSize = locSize
+
+        self.plotLocSize  = [locSize[0],
+                              locSize[1],
+                              locSize[2],
+                              locSize[3]]
+        self.plotAx = initPlot2Axes(self.plotLocSize, label)
+        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
+          
+        self.changed = False
 

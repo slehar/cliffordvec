@@ -34,106 +34,28 @@ plt.close('all')
 fig = plt.figure(figsize=(winXSizeInches, winYSizeInches))
 fig.canvas.set_window_title('CliffordVec')
 
+fig.text(.05, .9, "'Q' to quit", fontsize=18)
+
 # Keypress 'q' to quit callback function
 def press(event):
-    sys.stdout.flush()
+#    sys.stdout.flush()
     if event.key == 'q':
         plt.close()
 fig.canvas.mpl_connect('key_press_event', press)
 
-# Scalar Light Y
-class ScalarLight:
-    
-    def update_color(self, slVal):
-        r = - np.clip(slVal, -1, 0)
-        g =   np.clip(slVal,  0, 1)
-        b = 0.
-        self.lightAx.patches[0].set_facecolor((r,g,b,1))
-#        self.slAx.set_val(slVal)
-        self.changed = True
         
-
-    def __init__(self, locSize, label):
-        self.locSize = locSize
-        self.sliderLocSize = [locSize[0],
-                              locSize[1],
-                              locSize[2],
-                              locSize[3]/4.]
-        self.slAx = initaxes.init_slider(self.sliderLocSize, label)
-        self.slAx.on_changed(self.update_color)
-
-        self.lightLocSize  = [locSize[0]+locSize[2]/3,
-                              locSize[1]+locSize[3]*.75,
-                              locSize[2]/4,
-                              locSize[3]/2]
-        self.lightAx = initaxes.initPlainAx(self.lightLocSize, label)
+xLight   = initaxes.ScalarLight((.05, .55, .2, .2),"x")
         
-        self.changed = False
+yLight   = initaxes.ScalarLight((.05, .1, .2, .2), 'y')
         
+xVector  = initaxes.VectorPlot((.3, .55, .2, .2), 'x', 
+                               tArray, dArrayX)        
         
-xLight = ScalarLight((.05, .55, .2, .2),"x")
+yVector  = initaxes.VectorPlot((.3, .1,  .2, .2), 'y', 
+                               tArray, dArrayY)        
         
-yLight = ScalarLight((.05, .1, .2, .2), 'y')
-
-# Vector Plot
-class VectorPlot:
-    
-    def update_vector(self, val):
-#        self.scalarSl.set_val(val)
-#        self.scalarSl.update_color(val)
-        self.changed = True
-        
-        
-    def __init__(self, locSize, label):
-        self.locSize = locSize
-        self.sliderLocSize = [locSize[0],
-                              locSize[1],
-                              locSize[2],
-                              locSize[3]/4.]
-        self.slAx = initaxes.init_slider(self.sliderLocSize, label)
-        self.slAx.on_changed(self.update_vector)
-
-        self.plotLocSize  = [locSize[0],
-                              locSize[1]+locSize[3]*.5,
-                              locSize[2],
-                              locSize[3]]
-        self.plotAx = initaxes.initPlotAxes(self.plotLocSize, label)
-        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
-        
-        self.changed = False
-
-
-        
-xVector = VectorPlot((.3, .55, .2, .2), 'x')        
-        
-yVector = VectorPlot((.3, .1,  .2, .2), 'y')        
-        
-# Bivector Plot
-class BivectorPlot:
-    
-    def update_vector(self, val):
-#        self.scalarSl.set_val(val)
-#        self.scalarSl.update_color(val)
-        self.changed = True
-        
-        
-    def __init__(self, locSize, label):
-        self.locSize = locSize
-
-        self.plotLocSize  = [locSize[0],
-                              locSize[1],
-                              locSize[2],
-                              locSize[3]]
-        self.plotAx = initaxes.initPlot2Axes(self.plotLocSize, label)
-        self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
-          
-        self.changed = False
-
-
-biVector = BivectorPlot((.55, .1, .4, .8), 'Bivector')
-
-
-
+biVector = initaxes.BivectorPlot((.55, .1, .4, .8), 'Bivector', 
+                                 tArray, dArrayX, dArrayY)
 
         
 ########[ Sawtooth Generator ]########
