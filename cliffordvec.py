@@ -1,5 +1,5 @@
 '''
-CliffordVec3.py
+CliffordVec.py
 
 
 '''
@@ -32,18 +32,14 @@ slope = 1./period     # Basic X/t Y/t slope
 # Open figure 
 plt.close('all')
 fig = plt.figure(figsize=(winXSizeInches, winYSizeInches))
-fig.canvas.set_window_title('CliffordVec3')
+fig.canvas.set_window_title('CliffordVec')
 
-# Scalar Light X
-#ax0 = initaxes.initPlainAx((.13, .75, .05, .1),"Scalar X")
-#sliderS = initaxes.init_slider((.05, .55, .2, .05), "Scalar S")
-#
-#def update_color(xVal):
-#    r = - np.clip(xVal, -1, 0)
-#    g = np.clip(xVal, 0, 1)
-#    b = 0.
-#    ax0.patches[0].set_facecolor((r,g,b,1))
-#sliderS.on_changed(update_color)
+# Keypress 'q' to quit callback function
+def press(event):
+    sys.stdout.flush()
+    if event.key == 'q':
+        plt.close()
+fig.canvas.mpl_connect('key_press_event', press)
 
 # Scalar Light Y
 class ScalarLight:
@@ -130,7 +126,7 @@ class BivectorPlot:
                               locSize[3]]
         self.plotAx = initaxes.initPlot2Axes(self.plotLocSize, label)
         self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
-        
+          
         self.changed = False
 
 
@@ -153,7 +149,7 @@ def SawToothGenerator(arg):
     xVector.line1[0].set_data((0., currValX),(0,0)) 
     yVector.line1[0].set_data((0., currValY),(0,0))
     
-    biVector.line1[0].set_data((0,currValX), (0,currValY))
+    biVector.line1[0].set_data((0, currValX), (0, currValY))
     
     # Couple scalar and vector sliders
     if xVector.changed:
