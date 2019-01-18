@@ -34,7 +34,7 @@ def initPlainAx(locSize, axTitle):
 # Init plot axes
 def initPlotAxes(locSize, axTitle):
     ax = plt.axes(locSize)    #(xorg,yorg,width,height)
-    ax.set_yticks([])
+#    ax.set_yticks([])
     ax.set_xlim((-1,1))
     ax.grid(True)
     ax.set_title(axTitle)
@@ -43,7 +43,7 @@ def initPlotAxes(locSize, axTitle):
 # Init plot2 axes
 def initPlot2Axes(locSize, axTitle):
     ax = plt.axes(locSize)    #(xorg,yorg,width,height)
-    ax.set_xlim((-1, 1))
+    ax.set_xlim((-np.pi, np.pi))
     ax.set_ylim((-1, 1))
     ax.grid(True)
     ax.set_title(axTitle)
@@ -131,6 +131,7 @@ class BivectorPlot:
                               locSize[3]]
         self.plotAx = initPlot2Axes(self.plotLocSize, label)
         self.line1 = self.plotAx.plot(tArray, dArrayX,'-')
-          
+        self.line2 = self.plotAx.plot(tArray, dArrayX,'-')
+        
         self.changed = False
 
